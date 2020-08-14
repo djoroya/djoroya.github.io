@@ -1,0 +1,248 @@
+I"F<h3>1. Summary</h3>
+<hr style="border-top: 1px solid" />
+
+<h3>2. Education</h3>
+<hr style="border-top: 1px solid" />
+
+<h5> &#xbb; Bachelor's Degree in Physics</h5>
+<p><b style="color:gray"> <a href="section[1].url">Basque Country University</a>  (Sep, 2013 - Sep 2016) </b></p>
+<p>Físico especializado en simulaciones the sistemas de partículas y de fluidos.</p>
+<ul>
+
+    <li>Optimización de bases numéricas en dímeros.
+        <a href="https://djoroya.github.io/assets/docs/TFG-JesusOroya.pdf">(doc)</a>
+        <a href="https://djoroya.github.io/assets/docs/TFG-JesusOroya-Beamer.pdf">(slides)</a>
+    </li>
+
+</ul>
+<hr />
+
+<h5> &#xbb; Master's Degree in Computer Science</h5>
+<p><b style="color:gray"> <a href="section[1].url">Basque Country University</a>  (Jul, 2017 - Currently) </b></p>
+<p></p>
+<ul>
+
+</ul>
+<hr />
+
+<h3>3. Work Experience </h3>
+<hr style="border-top: 1px solid" />
+
+<h5>&#xbb; Research Fellowship</h5>
+<p><b style="color:gray"> <a href="https://www.simuneatomistics.com/">Simune Atomistic Simulations</a> (Sep, 2013 - Sep 2016)</b></p>
+
+<p></p>
+<ul>
+
+</ul>
+<hr />
+
+<h5>&#xbb; Backend Software Engineer</h5>
+<p><b style="color:gray"> <a href="https://www.accenture.com/">Accenture Tecnilógica</a> (Sep, 2013 - Sep 2016)</b></p>
+
+<p></p>
+<ul>
+
+</ul>
+<hr />
+
+<h5>&#xbb; Simulation Software Engineer</h5>
+<p><b style="color:gray"> <a href="http://mobility.deustotech.eu/">Deusto  University</a> (Sep, 2013 - Sep 2016)</b></p>
+
+<p></p>
+<ul>
+
+    <li>Navindoor. Design and Test location algorithms.
+        
+        <a href="https://djoroya.github.io/assets/docs/https://deustotech.github.io/navindoor-documentation/">(web)</a>
+        
+        
+        <a href="https://djoroya.github.io/assets/docs/Navindoor.pdf">(paper)</a>
+        
+        
+        
+        <a href="https://slides.com/deyvissjesusoroya/navindoor/fullscreen">(slides)</a>
+        
+        
+        <a href="https://github.com/DeustoTech/navindoor-code">(code)</a>
+                
+    </li>
+
+</ul>
+<hr />
+
+<h5>&#xbb; Simulation Software Engineer</h5>
+<p><b style="color:gray"> <a href="https://cmc.deusto.eus/">Chair of Computational Mathematics of Deusto</a> (Sep, 2013 - Sep 2016)</b></p>
+
+<p></p>
+<ul>
+
+</ul>
+<hr />
+
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+      data.addRows([
+        ['Research', 'Find sources',
+         new Date(2015, 0, 1), new Date(2015, 0, 5), null,  100,  null],
+        ['Write', 'Write paper',
+         null, new Date(2015, 0, 9), daysToMilliseconds(3), 25, 'Research,Outline'],
+        ['Cite', 'Create bibliography',
+         null, new Date(2015, 0, 7), daysToMilliseconds(1), 20, 'Research'],
+        ['Complete', 'Hand in paper',
+         null, new Date(2015, 0, 10), daysToMilliseconds(1), 0, 'Cite,Write'],
+        ['Outline', 'Outline paper',
+         null, new Date(2015, 0, 6), daysToMilliseconds(1), 100, 'Research']
+      ]);
+
+      var options = {
+        height: 275
+      };
+
+      var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+  </script>
+
+<h3>4. Own Repositories</h3>
+<hr style="border-top: 1px solid" />
+
+<ul id="repos"></ul>
+
+<script>
+    var req = new XMLHttpRequest();
+    req.open('GET', 'https://api.github.com/search/repositories?q=user:djoroya', false);
+    req.send(null);
+    var obj = JSON.parse(req.responseText);
+    var i = 0;
+    while (i < obj.items.length) {
+        var li = document.createElement("LI");    
+        var bo = document.createElement("B");    
+        var aa = document.createElement("a");    
+        aa.href = "https://github.com/"+obj.items[i].full_name;
+
+        aa.innerText = obj.items[i].name;  
+        document.getElementById("repos").appendChild(li)
+                                        .appendChild(bo)
+                                        .appendChild(aa);     
+        var pa = document.createElement("TEXT");    
+        pa.innerText = ": " +obj.items[i].description;
+        document.getElementById("repos").appendChild(li)
+                                        .appendChild(pa);  
+        i++
+    }
+</script>
+
+<h3>5. Organization Repositories</h3>
+<hr style="border-top: 1px solid" />
+
+<h5>5.1 PIBA BLUE</h5>
+<hr />
+
+<h5>5.2 DyCon ERC</h5>
+<hr />
+
+<ul>
+    <li><a href=""><b>DyCon Blog</b></a></li>
+    <li><a href=""><b>DyCon Toolbox</b></a></li>
+    <li><a href=""><b>DyCon Toolbox - Web documentation</b></a></li>
+</ul>
+
+<div id="curve_chart"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+     google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+//
+      function drawChart() {
+        //
+        var reqDyConBlog = new XMLHttpRequest();
+        reqDyConBlog.open('GET', 'https://api.github.com/repos/deustotech/DyCon-Blog/stats/contributors', false);
+        reqDyConBlog.send(null);
+        //
+        var reqDyConToolbox = new XMLHttpRequest();
+        reqDyConToolbox.open('GET', 'https://api.github.com/repos/deustotech/DyCon-toolbox/stats/contributors', false);
+        reqDyConToolbox.send(null);        
+        //
+        var reqDyConToolboxDocs = new XMLHttpRequest();
+        reqDyConToolboxDocs.open('GET', 'https://api.github.com/repos/deustotech/dycon-toolbox-documentation/stats/contributors', false);
+        reqDyConToolboxDocs.send(null);        
+        //
+        var objDB = JSON.parse(reqDyConBlog.responseText);
+        var objDT = JSON.parse(reqDyConToolbox.responseText);
+        var objDTDocs = JSON.parse(reqDyConToolboxDocs.responseText);
+        //
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('date',  'Date' );
+        dataTable.addColumn('number',  'DyCon Blog' );
+        dataTable.addColumn('number', 'Dycon Toolbox');
+        dataTable.addColumn('number', 'Dycon Toolbox Docs');
+        //
+        for (i in objDB){
+            if ( objDB[i].author.login == "djoroya" ){
+                for (iw in objDB[i].weeks){
+                    dt = new Date(objDB[i].weeks[iw].w*1000)    
+                    dataTable.addRows([[ dt, objDB[i].weeks[iw].c,null,null ]]);
+                }
+            }
+        }
+        //
+        for (i in objDT){
+            if ( objDT[i].author.login == "djoroya" ){
+                for (iw in objDT[i].weeks){
+                    dt = new Date(objDT[i].weeks[iw].w*1000)    
+                    dataTable.addRows([[ dt,null, objDT[i].weeks[iw].c,null ]]);
+                }
+            }
+        }
+        //
+        console.log(objDTDocs)
+        //
+        for (i in objDTDocs){
+            if ( objDTDocs[i].author.login == "djoroya" ){
+                for (iw in objDTDocs[i].weeks){
+                    dt = new Date(objDTDocs[i].weeks[iw].w*1000)    
+                    dataTable.addRows([[ dt,null, null,objDTDocs[i].weeks[iw].c ]]);
+                }
+            }
+        }
+        //
+        var options = {
+          title: 'Contributions',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+        vAxis: {  
+              ticks: [0, 5, 10, 15, 20]
+}       ,
+        vAxes: {
+          // Adds titles to each axis.
+          0: {title: 'Commits'},
+          1: {title: 'Date'}
+        },
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        chart.draw(dataTable, options);
+    }
+</script>
+
+:ET

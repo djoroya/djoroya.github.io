@@ -1,0 +1,77 @@
+
+<h3>3. Work Experience </h3>
+<hr style="border-top: 1px solid">
+
+{%- assign jobs = site.data.cv.jobs -%}
+{% for ijob in jobs %}
+<h5>&#xbb; {{ijob[1].position}}</h5>
+<b style="color:gray"> <a href="{{ijob[1].url}}">{{ijob[1].name}}</a> ({{ijob[1].start-date | date: "%b, %Y"}} - {{ijob[1].end-date | date: "%b %Y"}})</b> 
+
+<p>{{ijob[1].description}}</p>
+<ul>
+{% for idocs in ijob[1].docs %}
+    <li>{{idocs[1].title}}
+        {% if idocs[1].web_doc_url %}
+        <a href="{{site.url}}/assets/docs/{{idocs[1].web_doc_url}}">(web)</a>
+        {% endif %}
+        {% if idocs[1].pdf_doc_url %}
+        <a href="{{site.url}}/assets/docs/{{idocs[1].pdf_doc_url}}">(paper)</a>
+        {% endif %}
+        {% if idocs[1].pdf_slides_url %}
+        <a href="{{site.url}}/assets/docs/{{idocs[1].pdf_slides_url}}">(slides)</a>
+        {% endif %}
+        {% if idocs[1].slides_url %}
+        <a href="{{idocs[1].slides_url}}">(slides)</a>
+        {% endif %}
+        {% if idocs[1].repo_url %}
+        <a href="{{idocs[1].repo_url}}">(code)</a>
+        {% endif %}        
+    </li>
+{% endfor %}
+</ul>
+<hr>
+{% endfor %}
+
+
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+      data.addRows([
+        ['Research', 'Find sources',
+         new Date(2015, 0, 1), new Date(2015, 0, 5), null,  100,  null],
+        ['Write', 'Write paper',
+         null, new Date(2015, 0, 9), daysToMilliseconds(3), 25, 'Research,Outline'],
+        ['Cite', 'Create bibliography',
+         null, new Date(2015, 0, 7), daysToMilliseconds(1), 20, 'Research'],
+        ['Complete', 'Hand in paper',
+         null, new Date(2015, 0, 10), daysToMilliseconds(1), 0, 'Cite,Write'],
+        ['Outline', 'Outline paper',
+         null, new Date(2015, 0, 6), daysToMilliseconds(1), 100, 'Research']
+      ]);
+
+      var options = {
+        height: 275
+      };
+
+      var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+  </script>
+

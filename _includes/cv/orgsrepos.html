@@ -1,0 +1,96 @@
+
+
+<h3>5. Organization Repositories</h3>
+<hr style="border-top: 1px solid">
+
+<h5>5.1 PIBA BLUE</h5>
+<hr>
+
+<h5>5.2 DyCon ERC</h5>
+<hr>
+<ul>
+    <li><a href=""><b>DyCon Blog</b></a></li>
+    <li><a href=""><b>DyCon Toolbox</b></a></li>
+    <li><a href=""><b>DyCon Toolbox - Web documentation</b></a></li>
+</ul>
+
+<div id="curve_chart"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+     google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+//
+      function drawChart() {
+        //
+        var reqDyConBlog = new XMLHttpRequest();
+        reqDyConBlog.open('GET', 'https://api.github.com/repos/deustotech/DyCon-Blog/stats/contributors', false);
+        reqDyConBlog.send(null);
+        //
+        var reqDyConToolbox = new XMLHttpRequest();
+        reqDyConToolbox.open('GET', 'https://api.github.com/repos/deustotech/DyCon-toolbox/stats/contributors', false);
+        reqDyConToolbox.send(null);        
+        //
+        var reqDyConToolboxDocs = new XMLHttpRequest();
+        reqDyConToolboxDocs.open('GET', 'https://api.github.com/repos/deustotech/dycon-toolbox-documentation/stats/contributors', false);
+        reqDyConToolboxDocs.send(null);        
+        //
+        var objDB = JSON.parse(reqDyConBlog.responseText);
+        var objDT = JSON.parse(reqDyConToolbox.responseText);
+        var objDTDocs = JSON.parse(reqDyConToolboxDocs.responseText);
+        //
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('date',  'Date' );
+        dataTable.addColumn('number',  'DyCon Blog' );
+        dataTable.addColumn('number', 'Dycon Toolbox');
+        dataTable.addColumn('number', 'Dycon Toolbox Docs');
+        //
+        for (i in objDB){
+            if ( objDB[i].author.login == "djoroya" ){
+                for (iw in objDB[i].weeks){
+                    dt = new Date(objDB[i].weeks[iw].w*1000)    
+                    dataTable.addRows([[ dt, objDB[i].weeks[iw].c,null,null ]]);
+                }
+            }
+        }
+        //
+        for (i in objDT){
+            if ( objDT[i].author.login == "djoroya" ){
+                for (iw in objDT[i].weeks){
+                    dt = new Date(objDT[i].weeks[iw].w*1000)    
+                    dataTable.addRows([[ dt,null, objDT[i].weeks[iw].c,null ]]);
+                }
+            }
+        }
+        //
+        console.log(objDTDocs)
+        //
+        for (i in objDTDocs){
+            if ( objDTDocs[i].author.login == "djoroya" ){
+                for (iw in objDTDocs[i].weeks){
+                    dt = new Date(objDTDocs[i].weeks[iw].w*1000)    
+                    dataTable.addRows([[ dt,null, null,objDTDocs[i].weeks[iw].c ]]);
+                }
+            }
+        }
+        //
+        var options = {
+          title: 'Contributions',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+        vAxis: {  
+              ticks: [0, 5, 10, 15, 20]
+}       ,
+        vAxes: {
+          // Adds titles to each axis.
+          0: {title: 'Commits'},
+          1: {title: 'Date'}
+        },
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        chart.draw(dataTable, options);
+    }
+</script>
+
+
+

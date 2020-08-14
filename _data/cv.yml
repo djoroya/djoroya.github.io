@@ -1,0 +1,65 @@
+academic:
+  A01:
+      name: "Bachelor's Degree in Physics"
+      university: Basque Country University
+      start-date: 01-09-2013
+      end-date: 01-09-2016
+      description: Físico especializado en simulaciones the sistemas de partículas y de fluidos.
+      url: https://www.ehu.eus/es/
+      docs: 
+        DOC01:
+            title: Optimización de bases numéricas en dímeros. 
+            subtitle: Desarrollo, mejoras y documentación del código SIESTA
+            pdf_doc_url: TFG-JesusOroya.pdf
+            pdf_slides_url: TFG-JesusOroya-Beamer.pdf
+            repo_url:
+  A02:
+      name: "Master's Degree in Computer Science"
+      university: Basque Country University
+      start-date: 01-07-2017
+      end-date: Currently 
+      url: https://www.ehu.eus/es/
+
+jobs:
+  J01: 
+      name: "Simune Atomistic Simulations"
+      position: "Research Fellowship"
+      location: "Donosti-San Sebastian, Basque Country"
+      start-date: 01-09-2013
+      end-date: 01-09-2016
+      url: https://www.simuneatomistics.com/
+  J02: 
+      name: "Accenture Tecnilógica"
+      location: "Bilbao, Basque Country"     
+      start-date: 01-09-2013
+      end-date: 01-09-2016 
+      position: "Backend Software Engineer"
+      url: https://www.accenture.com/
+
+  J03: 
+      name: "Deusto  University"
+      location: "Bilbao, Basque Country"  
+      start-date: 01-09-2013
+      end-date: 01-09-2016
+      position: "Simulation Software Engineer"
+      url: http://mobility.deustotech.eu/
+      docs: 
+        DOC01:
+            title: Navindoor. Design and Test location algorithms. 
+            pdf_doc_url: Navindoor.pdf
+            pdf_slides_url: 
+            slides_url: https://slides.com/deyvissjesusoroya/navindoor/fullscreen
+            repo_url: https://github.com/DeustoTech/navindoor-code
+            web_doc_url: https://deustotech.github.io/navindoor-documentation/
+  J04: 
+      name: "Chair of Computational Mathematics of Deusto"
+      url: https://cmc.deusto.eus/
+      location: "Bilbao, Basque Country"
+      start-date: 01-09-2013
+      end-date: 01-09-2016  
+      position: "Simulation Software Engineer"
+
+skills:
+  S01:
+      name: "Simulation of differential equations"
+

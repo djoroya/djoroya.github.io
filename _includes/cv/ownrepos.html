@@ -1,0 +1,29 @@
+
+<h3>4. Own Repositories</h3>
+<hr style="border-top: 1px solid">
+<ul id="repos"></ul>
+
+<script>
+    var req = new XMLHttpRequest();
+    req.open('GET', 'https://api.github.com/search/repositories?q=user:djoroya', false);
+    req.send(null);
+    var obj = JSON.parse(req.responseText);
+    var i = 0;
+    while (i < obj.items.length) {
+        var li = document.createElement("LI");    
+        var bo = document.createElement("B");    
+        var aa = document.createElement("a");    
+        aa.href = "https://github.com/"+obj.items[i].full_name;
+
+        aa.innerText = obj.items[i].name;  
+        document.getElementById("repos").appendChild(li)
+                                        .appendChild(bo)
+                                        .appendChild(aa);     
+        var pa = document.createElement("TEXT");    
+        pa.innerText = ": " +obj.items[i].description;
+        document.getElementById("repos").appendChild(li)
+                                        .appendChild(pa);  
+        i++
+    }
+</script>
+

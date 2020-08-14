@@ -1,0 +1,18 @@
+<h3>2. Education</h3>
+<hr style="border-top: 1px solid">
+
+{%- assign academic = site.data.cv.academic -%}
+{% for section in academic %}
+<h5> &#xbb; {{section[1].name}}</h5>
+<b style="color:gray"> <a href="section[1].url">{{section[1].university}}</a>  ({{section[1].start-date | date: "%b, %Y"}} - {{section[1].end-date | date: "%b %Y"}}) </b>
+<p>{{section[1].description}}</p>
+<ul>
+{% for idocs in section[1].docs %}
+    <li>{{idocs[1].title}}
+        <a href="{{site.url}}/assets/docs/{{idocs[1].pdf_doc_url}}">(doc)</a>
+        <a href="{{site.url}}/assets/docs/{{idocs[1].pdf_slides_url}}">(slides)</a>
+    </li>
+{% endfor %}
+</ul>
+<hr>
+{% endfor %}

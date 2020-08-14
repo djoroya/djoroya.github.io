@@ -1,0 +1,21 @@
+url: https://djoroya.github.io
+# baseurl: /agency-jekyll-theme/
+
+# Site settings
+title: Jesús Oroya
+email: djoroya@gmail.com
+description: "I am a programmer physicist passionate about the world of artificial intelligence and control engineering."
+
+
+
+# Postal address (add as many lines as necessary)
+address:
+  - line: Ayala, Basque Country
+
+# Build settings
+markdown: kramdown
+
+permalink: /:categories/:title
+
+destination: docs/
+

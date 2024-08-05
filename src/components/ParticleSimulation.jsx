@@ -1,18 +1,20 @@
-// src/ParticleSimulation.jsx
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 // Parámetros del potencial Lennard-Jones
-const epsilon = 1;  // Profundidad del potencial
 const sigma = 1;    // Distancia a la cual el potencial es cero
 
-const calculateLJForce = (r) => {
-  const r6 = Math.pow(r, 6);
-  const r12 = r6 * r6;
-  return 24 * epsilon * (2 * Math.pow(sigma, 12) / r12 - Math.pow(sigma, 6) / r6) / r;
+
+
+const sigma_r = 1; // Desviación estándar de la distribución gaussiana
+const calculateGaussianForce = (r) => {
+  return 0.1 * Math.exp(-r * r/sigma_r**2) 
 };
 
-const ParticleSimulation = () => {
+const lims = 30;
+
+const ParticleSimulation = ({particleCount}) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -22,21 +24,30 @@ const ParticleSimulation = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    const particleCount = 200;
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.minDistance = 50;
+    controls.maxDistance = 500;
+
     const particles = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
+    const previousPositions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3); // Para los colores
+    const colors = new Float32Array(particleCount * 3);
 
     for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = Math.random() * 100 - 50;
-      positions[i * 3 + 1] = Math.random() * 100 - 50;
-      positions[i * 3 + 2] = Math.random() * 100 - 50;
-      velocities[i * 3] = (Math.random() - 0.5) * 0.1;
-      velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.1;
-      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
+      const x = 2 * lims * (Math.random() - 0.5);
+      const y = 2 * lims * (Math.random() - 0.5);
+      const z = 2 * lims * (Math.random() - 0.5);
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+      previousPositions[i * 3] = x - (Math.random() - 0.5) * 0.01; // Inicialización con un pequeño cambio
+      previousPositions[i * 3 + 1] = y - (Math.random() - 0.5) * 0.01;
+      previousPositions[i * 3 + 2] = z - (Math.random() - 0.5) * 0.01;
 
-      // Colores aleatorios
       colors[i * 3] = Math.random();
       colors[i * 3 + 1] = Math.random();
       colors[i * 3 + 2] = Math.random();
@@ -45,15 +56,49 @@ const ParticleSimulation = () => {
     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    const texture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+//    const texture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+    const texture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/ball.png');
 
-    const material = new THREE.PointsMaterial({ size: 10, vertexColors: true , sizeAttenuation: false, alphaTest: 0.5, transparent: true, map: texture });
+    const material = new THREE.PointsMaterial({
+      size: 25, 
+      vertexColors: true, 
+      sizeAttenuation: false, 
+      alphaTest: 0.5, 
+      transparent: true, 
+      map: texture
+    });
+
     const particleSystem = new THREE.Points(particles, material);
     scene.add(particleSystem);
+
+    // Cubo contenedor
+    const geometry = new THREE.BoxGeometry(2 * lims, 2 * lims, 2 * lims);
+    const materialCube = new THREE.MeshBasicMaterial({
+      color: "blue", 
+      wireframe: false, 
+      transparent: true, 
+      opacity: 0.2
+    });
+    const materialWireframe = new THREE.MeshBasicMaterial({
+      color: "blue", 
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5
+    });
+
+    const cube = new THREE.Mesh(geometry, materialCube);
+    const wireframe = new THREE.Mesh(geometry, materialWireframe);
+    // scene.add(cube);
+
+    const line_cube_1 = new THREE.Line(geometry, materialWireframe);
+    scene.add(line_cube_1);
+    // scene.add(wireframe);
 
     camera.position.z = 100;
 
     const computeForces = () => {
+      const accelerations = new Float32Array(particleCount * 3);
+
       for (let i = 0; i < particleCount; i++) {
         for (let j = i + 1; j < particleCount; j++) {
           const dx = positions[j * 3] - positions[i * 3];
@@ -61,39 +106,71 @@ const ParticleSimulation = () => {
           const dz = positions[j * 3 + 2] - positions[i * 3 + 2];
           const r = Math.sqrt(dx * dx + dy * dy + dz * dz);
           if (r < 2 * sigma) {
-            const force = calculateLJForce(r);
+            const force = calculateGaussianForce(r);
             const fx = force * (dx / r);
             const fy = force * (dy / r);
             const fz = force * (dz / r);
-            velocities[i * 3] += fx;
-            velocities[i * 3 + 1] += fy;
-            velocities[i * 3 + 2] += fz;
-            velocities[j * 3] -= fx;
-            velocities[j * 3 + 1] -= fy;
-            velocities[j * 3 + 2] -= fz;
+
+            accelerations[i * 3]     += fx;
+            accelerations[i * 3 + 1] += fy;
+            accelerations[i * 3 + 2] += fz;
+            accelerations[j * 3]     -= fx;
+            accelerations[j * 3 + 1] -= fy;
+            accelerations[j * 3 + 2] -= fz;
           }
         }
+
+        accelerations[i * 3 + 1] -= 0.001; // Gravedad
       }
+
+      // maximimun acceleration
+      const maxAcc = 0.1;
+      for (let i = 0; i < particleCount; i++) {
+        const acc = Math.sqrt(accelerations[i * 3] ** 2 + accelerations[i * 3 + 1] ** 2 + accelerations[i * 3 + 2] ** 2);
+        if (acc > maxAcc) {
+          accelerations[i * 3]     *= maxAcc / acc;
+          accelerations[i * 3 + 1] *= maxAcc / acc;
+          accelerations[i * 3 + 2] *= maxAcc / acc;
+        }
+      }
+
+      return accelerations;
     };
 
     const animate = () => {
       requestAnimationFrame(animate);
       
-      computeForces();
+      const accelerations = computeForces();
 
-      // Actualiza posiciones según las velocidades
       for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] += velocities[i * 3];
-        positions[i * 3 + 1] += velocities[i * 3 + 1];
-        positions[i * 3 + 2] += velocities[i * 3 + 2];
+        const newX = 2 * positions[i * 3] - previousPositions[i * 3] + accelerations[i * 3];
+        const newY = 2 * positions[i * 3 + 1] - previousPositions[i * 3 + 1] + accelerations[i * 3 + 1];
+        const newZ = 2 * positions[i * 3 + 2] - previousPositions[i * 3 + 2] + accelerations[i * 3 + 2];
 
-        // Rebotar en los bordes
-        if (positions[i * 3]     < -50 || positions[i * 3]     > 50) velocities[i * 3] *= -1;
-        if (positions[i * 3 + 1] < -50 || positions[i * 3 + 1] > 50) velocities[i * 3 + 1] *= -1;
-        if (positions[i * 3 + 2] < -50 || positions[i * 3 + 2] > 50) velocities[i * 3 + 2] *= -1;
+        previousPositions[i * 3] = positions[i * 3];
+        previousPositions[i * 3 + 1] = positions[i * 3 + 1];
+        previousPositions[i * 3 + 2] = positions[i * 3 + 2];
+
+        positions[i * 3] = newX;
+        positions[i * 3 + 1] = newY;
+        positions[i * 3 + 2] = newZ;
+
+        if (positions[i * 3] < -lims || positions[i * 3] > lims) {
+          positions[i * 3] = Math.max(-lims, Math.min(lims, positions[i * 3]));
+          previousPositions[i * 3] = positions[i * 3];
+        }
+        if (positions[i * 3 + 1] < -lims || positions[i * 3 + 1] > lims) {
+          positions[i * 3 + 1] = Math.max(-lims, Math.min(lims, positions[i * 3 + 1]));
+          previousPositions[i * 3 + 1] = positions[i * 3 + 1];
+        }
+        if (positions[i * 3 + 2] < -lims || positions[i * 3 + 2] > lims) {
+          positions[i * 3 + 2] = Math.max(-lims, Math.min(lims, positions[i * 3 + 2]));
+          previousPositions[i * 3 + 2] = positions[i * 3 + 2];
+        }
       }
 
       particles.attributes.position.needsUpdate = true;
+      controls.update(); // Actualiza los controles
       renderer.render(scene, camera);
     };
 
@@ -107,6 +184,7 @@ const ParticleSimulation = () => {
 
     return () => {
       containerRef.current.removeChild(renderer.domElement);
+      controls.dispose(); // Limpia los controles al desmontar el componente
       window.removeEventListener('resize', () => {});
     };
   }, []);

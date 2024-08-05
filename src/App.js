@@ -5,23 +5,46 @@ import { MdOutlineMail } from "react-icons/md";
 import ParticleSimulation  from './components/ParticleSimulation';
 
 import {Navbar} from './components/Navbar';
+import { useEffect, useState } from 'react';
 
-function App() {
+
+const FormNParticles = ({ particles, setParticles }) => {
 
 
   return (
+    <div className="input-group mb-3">
+      <label className="input-group-text" htmlFor="inputGroupSelect01">Particles</label>
+      <select className="form-select" id="inputGroupSelect01" value={particles} onChange={e => setParticles(parseFloat(e.target.value))}>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+      </select>
+      {/* Restart threejs */}
+    </div>
+  );
+};
+
+function App() {
+
+  const [particles, setParticles] = useState(100);
+
+  return (
     <div className="App" style={{ position: 'relative', height: '100vh', width: '100vw' }}>
-      <ParticleSimulation />
+      <ParticleSimulation particleCount={particles} />
 
       <Navbar />
       <header className="App-header">
 
-
-        <div className='container small'> 
+        
+        <div className='container small'>
         {/* alpha 0.5 */}
         <div className="card text-white bg-secondary m-5 p-3 rounded-3" style={{  opacity: 0.9 }}>
           <div className="card-header">Jesús Oroya</div>
           <div className="card-body">
+                  <FormNParticles particles={particles} setParticles={setParticles} />
+
           Hi! I’m a software developer specializing in mathematical modeling and numerical simulation. I currently work at Advanced Material Simulation, where I focus on material modeling.
 
           Throughout my career, I’ve developed a range of mathematical models, including control systems, crop growth models, heat exchange models, and Diesel reforming for hydrogen production, solid fuel cells, indoor pedestrian positioning systems, and more. 

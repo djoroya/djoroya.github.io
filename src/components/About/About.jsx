@@ -2,6 +2,8 @@ import React from 'react';
 import "./Timeline.css";
 import { ColorsTimeline } from './Timeline';
 
+
+
 export const About = ({setPage}) => {
     return (
       <div>
@@ -15,6 +17,7 @@ export const About = ({setPage}) => {
             </div>
           </div>
           <ColorsTimeline />
+
 
         </div>
       </div>

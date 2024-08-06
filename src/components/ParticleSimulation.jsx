@@ -40,7 +40,9 @@ const ParticleSimulation = ({particleCount,parent}) => {
 
   useEffect(() => {
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // white background
+    scene.background = new THREE.Color(0xffffff);
+    const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
@@ -191,7 +193,7 @@ const ParticleSimulation = ({particleCount,parent}) => {
     const gui = new GUI();
     // position of gui in middle right
     gui.domElement.style.position = 'absolute';
-    gui.domElement.style.top = window.innerHeight / 3 + 'px';
+    gui.domElement.style.top = window.innerHeight / 2 + 'px';
     gui.domElement.style.right = window.innerWidth / 8 + 'px';
 
     
@@ -247,17 +249,19 @@ const ParticleSimulation = ({particleCount,parent}) => {
     });
 
     return () => {
-      containerRef.current.removeChild(renderer.domElement);
-      controls.dispose(); // Limpia los controles al desmontar el componente
+      // containerRef.current.removeChild(renderer.domElement);
+      // controls.dispose(); // Limpia los controles al desmontar el componente
       window.removeEventListener('resize', () => {});
+      // destroy gui
+      gui.destroy();
     };
   }, []);
 
-  // return <div ref={containerRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />;
-  // relative in container
-  // return <div ref={containerRef} style={{ position: 'relative', width: '50%', height: '50%' }} />;
-  // absolute in container
-  return <div ref={containerRef} style={{ position: 'absolute', top: "5%", left: 0, width: '80%', height: '100%' }} />;
+
+  return <div ref={containerRef} 
+  className='mt-3'
+  style={{ position: 'absolute', top: "10%", backgroundColor: 'rgba(0, 1, 1, 0.5)',
+  left: 0, width: '80%', height: '50%' }} />;
 };
 
 export default ParticleSimulation;

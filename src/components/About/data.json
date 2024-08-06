@@ -1,0 +1,50 @@
+[
+    {
+        "title": "Simulation Developer",
+        "enterprice": "Advanced Material Simulation",
+        "content": "Working on the development of a simulation software for the prediction of the mechanical properties of materials.",
+        "date": "2023 - present",
+        "technology": ["Python", "MATLAB","Calculix","React","Three.js"],
+        "topics": ["Physics", "Engineering", "Materials Science"]
+    },
+    {
+        "title": "Simulation Developer",
+        "enterprice": "University of Deusto [Energy Team]",
+        "topics": ["Control Systems", "Crop Simulation", "MATLAB","Chemical Engineering"],
+        "technology": ["MATLAB","AI", "Python"],
+        "content": "Developing a library for the simulation of the control of the irrigation of crops.",
+        "date": "2021 - 2023"
+    },
+    {
+        "title": "Simulation Developer",
+        "enterprice": "Chair of Computational Mathematics",
+        "topics": ["Control Systems", "Signal Processing", "MATLAB"],
+        "technology": ["MATLAB","Python", "Jekyll"],
+        "content": "Developing a library for the simulation of solve the optimal control problems. Also, developing a website for the dissemination of the library.",
+        "date": "2019 - 2021"
+    },
+    {
+        "title": "Simulation Developer",
+        "enterprice": "University of Deusto [Mobily Team]",
+        "topics": ["Indoor Positioning"," GUI", "Signal Processing"],
+        "technology": ["MATLAB"],
+        "content": "Developing a software for the development of indoor positioning algorithms.",
+        "date": "2017 - 2019"
+    },
+    {
+        "title"     : "Backend Developer",
+        "enterprice": "Accenture",
+        "topics"    : [ "Database", "Ensurance", "Banking"],
+        "technology": ["COBOL", "DB2", "RPG"],
+        "content"   : "Developing and maintaining the backend of a banking system.",
+        "date"      : "2016 - 2017"
+    },
+    {
+      "title": "Researcher Fellow",
+      "enterprice": "SIMUNE Atomistics",
+      "technology": ["Python", "Bash Script", "SIESTA"],
+      "topics": ["Physics", "Materials Science", "Computational Chemistry"],
+      "content": "Develop the basis optimization of the SIESTA code for the simulation of the properties of materials.",
+      "date": "2015 - 2016"
+    }
+]

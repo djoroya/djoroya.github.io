@@ -1,12 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootswatch/dist/lux/bootstrap.min.css";
+
 import { MdOutlineMail } from "react-icons/md";
-import ParticleSimulation  from './components/ParticleSimulation';
+import ParticleSimulation from './components/ParticleSimulation';
 
-import {Navbar} from './components/Navbar';
-import { useEffect, useState,useRef } from 'react';
-
+import { Navbar } from './components/Navbar';
+import { useEffect, useState, useRef } from 'react';
+import { About } from './components/About/About';
 
 const FormNParticles = ({ particles, setParticles }) => {
 
@@ -29,38 +31,57 @@ const FormNParticles = ({ particles, setParticles }) => {
 function App() {
 
   const [particles, setParticles] = useState(100);
+  const [page, setPage] = useState('home');
 
+
+  const Home_simulation = () => {
+    return (
+      <div className="App">
+        <ParticleSimulation particleCount={particles} />
+
+
+        <div className='container font-monospace d-flex justify-content-center'>
+          {/* alpha 0.5 */}
+          <div className="card text-white m-5 p-3 rounded-3"
+            style={{ backgroundColor: 'rgba(1, 1, 1, 0.5)', width: "28rem" }}>
+            <div className="card-header"><h1>Jesús Oroya</h1></div>
+            <div className="card-body">
+              <h5>
+                Physicist and simulation developer.
+              </h5>
+              {/* view more */}
+              <div className="d-grid gap-2 d-md-flex justify-content-md-center m-4">
+                <button className="btn btn-primary"
+                  onClick={() => setPage('about')}>About me</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    );
+  }
+
+
+
+
+
+  const Content = () => {
+    if (page === 'home') {
+      return <Home_simulation />;
+    }
+    if (page === 'about') {
+      return <About setPage={setPage} />;
+    }
+  }
   return (
-    <div className="App" style={{ position: 'relative', height: '100vh', width: '100vw' }}>
-      <ParticleSimulation particleCount={particles} />
-
-      <Navbar />
-      <header className="App-header">
-
-        
-        <div className='container font-monospace'>
-        {/* alpha 0.5 */}
-        <div className="card text-white m-5 p-3 rounded-3" style={{  backgroundColor: 'rgba(1, 1, 1, 0.5)' }}>
-          <div className="card-header"><h1>Jesús Oroya</h1></div>
-          <div className="card-body">
-          <h5>
-          Physicist and simulation developer. 
-          </h5>
-
-          <div className="text-end">
-          <a href="mailto:djoroya@gmail.com">
-          < MdOutlineMail />
-          </a>
-          </div>
-          </div>
-        </div>
-
-        </div>
-
-
-      </header>
-
+    <div>
+      <Navbar setPage={setPage} />
+      <Content />
     </div>
+
   );
 }
 

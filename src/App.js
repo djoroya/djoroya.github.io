@@ -5,7 +5,7 @@ import { MdOutlineMail } from "react-icons/md";
 import ParticleSimulation  from './components/ParticleSimulation';
 
 import {Navbar} from './components/Navbar';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 
 
 const FormNParticles = ({ particles, setParticles }) => {
@@ -44,7 +44,7 @@ function App() {
           <div className="card-header"><h1>Jesús Oroya</h1></div>
           <div className="card-body">
           <h5>
-          Hi! I’m a physicist and simulation developer. 
+          Physicist and simulation developer. 
           </h5>
 
           <div className="text-end">

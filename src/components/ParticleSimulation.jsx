@@ -35,12 +35,12 @@ const calculateForce = (r) => {
 
 const lims = 30;
 
-const ParticleSimulation = ({particleCount}) => {
+const ParticleSimulation = ({particleCount,parent}) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
@@ -79,7 +79,6 @@ const ParticleSimulation = ({particleCount}) => {
     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-//    const texture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
     const texture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/ball.png');
 
     const material = new THREE.PointsMaterial({
@@ -109,13 +108,9 @@ const ParticleSimulation = ({particleCount}) => {
       opacity: 0.5
     });
 
-    const cube = new THREE.Mesh(geometry, materialCube);
-    const wireframe = new THREE.Mesh(geometry, materialWireframe);
-    // scene.add(cube);
 
     const line_cube_1 = new THREE.Line(geometry, materialWireframe);
     scene.add(line_cube_1);
-    // scene.add(wireframe);
 
     camera.position.z = 100;
 
@@ -153,7 +148,6 @@ const ParticleSimulation = ({particleCount}) => {
         downVector.applyQuaternion(camera.quaternion); // Aplica la rotación de la cámara al vector
         downVector.normalize();
 
-        // if type_interaction === 'gravity' g = 0 if type_interaction === 'gaussian' g = 0.01
         const g = type_interaction === 'gravity' ? 0 : 0.01;
         
         accelerations[i * 3 + 0] += g * downVector.x;
@@ -164,12 +158,12 @@ const ParticleSimulation = ({particleCount}) => {
         const rpos = Math.sqrt(positions[i * 3] ** 2 + positions[i * 3 + 1] ** 2 + positions[i * 3 + 2] ** 2);
         // atracción al origen
         const force = type_interaction === 'gravity' ? 0.0068 : 0;
-        accelerations[i * 3]     -= force * positions[i * 3] / rpos;
+        accelerations[i * 3]     -= force * positions[i * 3 + 0] / rpos;
         accelerations[i * 3 + 1] -= force * positions[i * 3 + 1] / rpos;
         accelerations[i * 3 + 2] -= force * positions[i * 3 + 2] / rpos;
         // friction
         const friction = type_interaction === 'gravity' ? 0.01 : 0.01;
-        accelerations[i * 3]     -= friction * vx;
+        accelerations[i * 3 + 0] -= friction * vx;
         accelerations[i * 3 + 1] -= friction * vy;
         accelerations[i * 3 + 2] -= friction * vz;
         // noise 
@@ -196,9 +190,9 @@ const ParticleSimulation = ({particleCount}) => {
 
     const gui = new GUI();
     // position of gui in middle right
-    gui.domElement.style.position = 'relative';
-    gui.domElement.style.top = '0.5';
-    gui.domElement.style.right = '0';
+    gui.domElement.style.position = 'absolute';
+    gui.domElement.style.top = window.innerHeight / 3 + 'px';
+    gui.domElement.style.right = window.innerWidth / 8 + 'px';
 
     
     // add boolean controller to switch between gaussian and gravity

@@ -1,16 +1,37 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// GUI
+import { GUI } from 'dat.gui'
+
 
 // Parámetros del potencial Lennard-Jones
-const sigma = 1;    // Distancia a la cual el potencial es cero
 
+var type_interaction = 'molecular dynamics'; // Tipo de interacción: 'gaussian' o 'lennard-jones'
 
+const sigma_r = 2; // Desviación estándar de la distribución gaussiana
 
-const sigma_r = 1; // Desviación estándar de la distribución gaussiana
-const calculateGaussianForce = (r) => {
-  return 0.1 * Math.exp(-r * r/sigma_r**2) 
+const calculateGaussianEnergy= (r) => {
+  return 10 * Math.exp(-r * r/sigma_r**2) 
 };
+
+const calculateGaussianForce = (r) => {
+  return -10 * Math.exp(-r * r/sigma_r**2) * r / sigma_r**2;
+}
+const calculateGravityForce = (r0) => {
+  const r = r0 - 4
+  return 3.5 * Math.exp(-r * r/sigma_r**2) * r / sigma_r**2;
+}
+
+const calculateForce = (r) => {
+  if (type_interaction === 'molecular dynamics') {
+    return calculateGaussianForce(r);
+  } else if (type_interaction === 'gravity') {
+    return calculateGravityForce(r);
+  }
+  return 0;
+};
+
 
 const lims = 30;
 
@@ -37,6 +58,8 @@ const ParticleSimulation = ({particleCount}) => {
     const velocities = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
+
+
     for (let i = 0; i < particleCount; i++) {
       const x = 2 * lims * (Math.random() - 0.5);
       const y = 2 * lims * (Math.random() - 0.5);
@@ -60,7 +83,7 @@ const ParticleSimulation = ({particleCount}) => {
     const texture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/ball.png');
 
     const material = new THREE.PointsMaterial({
-      size: 25, 
+      size: 35, 
       vertexColors: true, 
       sizeAttenuation: false, 
       alphaTest: 0.5, 
@@ -101,12 +124,13 @@ const ParticleSimulation = ({particleCount}) => {
 
       for (let i = 0; i < particleCount; i++) {
         for (let j = i + 1; j < particleCount; j++) {
-          const dx = positions[j * 3] - positions[i * 3];
+          const dx = positions[j * 3 + 0] - positions[i * 3 + 0];
           const dy = positions[j * 3 + 1] - positions[i * 3 + 1];
           const dz = positions[j * 3 + 2] - positions[i * 3 + 2];
           const r = Math.sqrt(dx * dx + dy * dy + dz * dz);
-          if (r < 2 * sigma) {
-            const force = calculateGaussianForce(r);
+          if (r < 2 * sigma_r) {
+            // const force = calculateGaussianForce(r);
+            const force = calculateForce(r);
             const fx = force * (dx / r);
             const fy = force * (dy / r);
             const fz = force * (dz / r);
@@ -120,11 +144,44 @@ const ParticleSimulation = ({particleCount}) => {
           }
         }
 
-        accelerations[i * 3 + 1] -= 0.001; // Gravedad
-      }
+        const vx = positions[i * 3] - previousPositions[i * 3];
+        const vy = positions[i * 3 + 1] - previousPositions[i * 3 + 1];
+        const vz = positions[i * 3 + 2] - previousPositions[i * 3 + 2];
+        // camera vector 
+        const downVector = new THREE.Vector3(0, -1, 0); // El eje Y negativo representa 'abajo'
+
+        downVector.applyQuaternion(camera.quaternion); // Aplica la rotación de la cámara al vector
+        downVector.normalize();
+
+        // if type_interaction === 'gravity' g = 0 if type_interaction === 'gaussian' g = 0.01
+        const g = type_interaction === 'gravity' ? 0 : 0.01;
+        
+        accelerations[i * 3 + 0] += g * downVector.x;
+        accelerations[i * 3 + 1] += g * downVector.y;
+        accelerations[i * 3 + 2] += g * downVector.z;
+
+        // 
+        const rpos = Math.sqrt(positions[i * 3] ** 2 + positions[i * 3 + 1] ** 2 + positions[i * 3 + 2] ** 2);
+        // atracción al origen
+        const force = type_interaction === 'gravity' ? 0.0068 : 0;
+        accelerations[i * 3]     -= force * positions[i * 3] / rpos;
+        accelerations[i * 3 + 1] -= force * positions[i * 3 + 1] / rpos;
+        accelerations[i * 3 + 2] -= force * positions[i * 3 + 2] / rpos;
+        // friction
+        const friction = type_interaction === 'gravity' ? 0.01 : 0.01;
+        accelerations[i * 3]     -= friction * vx;
+        accelerations[i * 3 + 1] -= friction * vy;
+        accelerations[i * 3 + 2] -= friction * vz;
+        // noise 
+        const noise = type_interaction === 'gravity' ? 0.001 : 0.1;
+        accelerations[i * 3]     += noise * (Math.random() - 0.5);
+        accelerations[i * 3 + 1] += noise * (Math.random() - 0.5);
+        accelerations[i * 3 + 2] += noise * (Math.random() - 0.5);
+
+        }
 
       // maximimun acceleration
-      const maxAcc = 0.1;
+      const maxAcc = 1;
       for (let i = 0; i < particleCount; i++) {
         const acc = Math.sqrt(accelerations[i * 3] ** 2 + accelerations[i * 3 + 1] ** 2 + accelerations[i * 3 + 2] ** 2);
         if (acc > maxAcc) {
@@ -136,6 +193,19 @@ const ParticleSimulation = ({particleCount}) => {
 
       return accelerations;
     };
+
+    const gui = new GUI();
+    // position of gui in middle right
+    gui.domElement.style.position = 'relative';
+    gui.domElement.style.top = '0.5';
+    gui.domElement.style.right = '0';
+
+    
+    // add boolean controller to switch between gaussian and gravity
+    gui.add({type_interaction: 'molecular dynamics'}, 'type_interaction', ['molecular dynamics', 'gravity']).onChange((value) => {
+      type_interaction = value;
+    });
+
 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -189,7 +259,11 @@ const ParticleSimulation = ({particleCount}) => {
     };
   }, []);
 
-  return <div ref={containerRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />;
+  // return <div ref={containerRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />;
+  // relative in container
+  // return <div ref={containerRef} style={{ position: 'relative', width: '50%', height: '50%' }} />;
+  // absolute in container
+  return <div ref={containerRef} style={{ position: 'absolute', top: "5%", left: 0, width: '80%', height: '100%' }} />;
 };
 
 export default ParticleSimulation;

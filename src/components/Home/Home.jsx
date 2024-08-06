@@ -1,7 +1,7 @@
 
 import ParticleSimulation  from './ParticleSimulation';
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 
 export const Home = ({setPage}) => {
     const [particles, setParticles] = useState(100);
@@ -22,8 +22,7 @@ export const Home = ({setPage}) => {
               </h5>
               {/* view more */}
               <div className="d-grid gap-2 d-md-flex justify-content-md-center ">
-                <button className="btn btn-primary"
-                  onClick={() => setPage('about')}>About me</button>
+                <Link to="/about" className="btn btn-primary">About me</Link>
               </div>
             </div>
 

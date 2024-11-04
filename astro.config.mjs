@@ -4,10 +4,12 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import react from "@astrojs/react";
-import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://djoroya.github.io",
+  build : {
+    assets: "assets"
+  },
   integrations: [tailwind(), mdx(), sitemap(), icon(), react(), mdx()],
 });

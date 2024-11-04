@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import { Picture } from "astro:assets";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+
+// Filter team entries with 'draft: false' & date before current date
+const publishedTeamMembers = await getCollection("team", ({ data }) => {
+  return !data.draft && data.publishDate < new Date();
+});
+---
+
+<Layout title="About Me">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">About Me</Fragment>
+      <Fragment slot="desc"
+        >A brief introduction about my journey and passion.</Fragment
+      >
+    </Sectionhead>
+
+    <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
+      <h2 class="font-bold text-3xl text-gray-800">
+        Empowering the world with simulation and technology.
+      </h2>
+      <p class="text-lg leading-relaxed text-slate-500">
+        Hello! I'm Deyviss Jesus Oroya Villalta, a passionate physicist and
+        engineer specializing in materials simulation and numerical methods.
+        With a strong foundation in physics and programming, I enjoy developing
+        innovative solutions for complex material problems.
+      </p>
+      <p class="text-lg leading-relaxed text-slate-500">
+        I have extensive experience in various computational techniques,
+        including finite element methods (FEM) and molecular dynamics
+        simulations, utilizing tools like LAMMPS and Calculix. My goal is to
+        bridge the gap between theory and practical applications in material
+        science.
+      </p>
+      <p class="text-lg leading-relaxed text-slate-500">
+        In addition to my technical skills, I thrive in collaborative
+        environments and am always eager to learn new technologies. I enjoy
+        contributing to open-source projects and sharing knowledge with the
+        community.
+      </p>
+      <p class="text-lg leading-relaxed text-slate-500">
+        When I’m not working on simulations or coding, you can find me exploring
+        new technologies, reading scientific literature, or spending quality
+        time with my family.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
+      <!-- Puedes agregar elementos adicionales aquí si es necesario -->
+    </div>
+  </Container>
+</Layout>

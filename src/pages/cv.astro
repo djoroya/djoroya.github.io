@@ -1,0 +1,114 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+const cv = [
+  {
+    title: "Simulation Developer",
+    enterprice: "Advanced Material Simulation",
+    content:
+      "Working on the development of a simulation software for the prediction of the mechanical properties of materials.",
+    date: "2023 - present",
+    technology: ["Python", "MATLAB", "Calculix", "React", "Three.js"],
+    topics: ["Physics", "Engineering", "Materials Science"],
+  },
+  {
+    title: "Simulation Developer",
+    enterprice: "University of Deusto [Energy Team]",
+    topics: [
+      "Control Systems",
+      "Crop Simulation",
+      "MATLAB",
+      "Chemical Engineering",
+    ],
+    technology: ["MATLAB", "AI", "Python"],
+    content:
+      "Developing a library for the simulation of the control of the irrigation of crops.",
+    date: "2021 - 2023",
+  },
+  {
+    title: "Simulation Developer",
+    enterprice: "Chair of Computational Mathematics",
+    topics: ["Control Systems", "Signal Processing", "MATLAB"],
+    technology: ["MATLAB", "Python", "Jekyll"],
+    content:
+      "Developing a library for the simulation of solve the optimal control problems. Also, developing a website for the dissemination of the library.",
+    date: "2019 - 2021",
+  },
+  {
+    title: "Simulation Developer",
+    enterprice: "University of Deusto [Mobily Team]",
+    topics: ["Indoor Positioning", " GUI", "Signal Processing"],
+    technology: ["MATLAB"],
+    content:
+      "Developing a software for the development of indoor positioning algorithms.",
+    date: "2017 - 2019",
+  },
+  {
+    title: "Backend Developer",
+    enterprice: "Accenture",
+    topics: ["Database", "Ensurance", "Banking"],
+    technology: ["COBOL", "DB2", "RPG"],
+    content: "Developing and maintaining the backend of a banking system.",
+    date: "2016 - 2017",
+  },
+  {
+    title: "Researcher Fellow",
+    enterprice: "SIMUNE Atomistics",
+    technology: ["Python", "Bash Script", "SIESTA"],
+    topics: ["Physics", "Materials Science", "Computational Chemistry"],
+    content:
+      "Develop the basis optimization of the SIESTA code for the simulation of the properties of materials.",
+    date: "2015 - 2016",
+  },
+];
+---
+
+<Layout title="CV">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Curriculum Vitae</Fragment>
+      <Fragment slot="desc"> My professional experience </Fragment>
+    </Sectionhead>
+
+    {
+      cv.map((item) => (
+        <div class="bg-white shadow-md rounded-lg p-6 mt-12 transition-transform transform hover:scale-105">
+          <div class="flex items-center justify-between mt-2 flex-wrap">
+            <h3 class="text-2xl font-bold text-gray-800">{item.title}</h3>
+            <div class="flex items-center space-x-2">
+              <p class="p-2 text-white bg-green-500 rounded-md border border-green-600">
+                {item.enterprice}
+              </p>
+              <p class="p-2 text-white bg-blue-500 rounded-md border border-blue-600">
+                {item.date}
+              </p>
+            </div>
+          </div>
+          <p class="mt-2 text-gray-700">{item.content}</p>
+
+          <div class="mt-4">
+            <h4 class="text-lg font-bold text-blue-800">Technologies</h4>
+            <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 mt-2">
+              {item.technology.map((tech) => (
+                <li class="text-gray-600 border border-gray-300 rounded-md p-2 bg-blue-100">
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="mt-4">
+            <h4 class="text-lg font-bold text-blue-800">Topics</h4>
+            <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 mt-2">
+              {item.topics.map((topic) => (
+                <li class="text-gray-600 border border-gray-300 rounded-md p-2 bg-blue-100">
+                  {topic}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))
+    }
+  </Container>
+</Layout>

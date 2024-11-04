@@ -1,0 +1,71 @@
+---
+// @ts-ignore
+import { Icon } from "astro-icon/components";
+
+const features = [
+  {
+    title: "Material Simulation",
+    description:
+      "Development of accurate models for molecular dynamics and finite elements, optimized for cutting-edge material research.",
+    icon: "bx:bxs-flask",
+  },
+  {
+    title: "Integration of Numerical Methods",
+    description:
+      "Extensive experience in numerical methods such as FEM (Calculix) and atomic simulations (LAMMPS), combining physics and programming for robust solutions.",
+    icon: "bx:bxs-calculator",
+  },
+  {
+    title: "Full-Stack Development",
+    description:
+      "Creation of intuitive web interfaces for the use of material simulation models, both in frontend and backend, with technologies such as React and Python.",
+    icon: "bx:bxs-layer",
+  },
+  {
+    title: "Computational Optimization",
+    description:
+      "Focus on code optimization for large-scale simulations, reducing runtime and memory consumption in scientific applications.",
+    icon: "bx:bxs-chip",
+  },
+  {
+    title: "Optimal Control and Modeling",
+    description:
+      "Experience in optimal control and modeling of complex dynamic systems, applied to material simulation and advanced numerical experiments.",
+    icon: "bx:bxs-cog",
+  },
+  {
+    title: "Community and Collaboration",
+    description:
+      "Contributions and collaborations in open-source projects and community initiatives, driving innovation in simulation and materials technology.",
+    icon: "bx:bxs-group",
+  },
+];
+---
+
+
+<div class="mt-16 md:mt-0">
+  <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+    Mathematical Modeling
+  </h2>
+  <p class="text-lg mt-4 text-slate-600">
+    With a solid foundation in physics and programming, I offer advanced
+    solutions in materials simulation. From molecular dynamics to finite
+    elements, I bring precision and knowledge to every project.
+  </p>
+</div>
+
+<div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
+  {
+    features.map((item) => (
+      <div class="flex gap-4 items-start">
+        <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0">
+          <Icon class="text-white" name={item.icon} />
+        </div>
+        <div>
+          <h3 class="font-semibold text-lg">{item.title}</h3>{" "}
+          <p class="text-slate-800 mt-1 leading-relaxed">{item.description}</p>
+        </div>
+      </div>
+    ))
+  }
+</div>

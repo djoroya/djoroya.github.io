@@ -2,19 +2,32 @@
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
+import { Children } from "react";
 const cv = [
   {
     title: "Simulation Developer",
     enterprice: "Advanced Material Simulation",
+    url: "https://amsimulation.com/",
+    icon: "https://amsimulation.com/wp-content/uploads/2024/10/advanced_material_simulation.png",
     content:
       "Working on the development of a simulation software for the prediction of the mechanical properties of materials.",
     date: "2023 - present",
-    technology: ["Python", "MATLAB", "Calculix", "React", "Three.js"],
+    technology: [
+      "Python",
+      "MATLAB",
+      "Calculix",
+      "React",
+      "Three.js",
+      "Lammmps",
+      "Flask",
+    ],
     topics: ["Physics", "Engineering", "Materials Science"],
   },
   {
     title: "Simulation Developer",
     enterprice: "University of Deusto [Energy Team]",
+    url: "https://deustotech.deusto.es/",
+    icon: "https://deustotech.deusto.es/wp-content/themes/deustotech/assets/images/deustotech_logo_full.svg",
     topics: [
       "Control Systems",
       "Crop Simulation",
@@ -28,16 +41,20 @@ const cv = [
   },
   {
     title: "Simulation Developer",
+    url: "https://cmc.deusto.eus/",
+    icon: "https://cmc.deusto.eus/wp-content/uploads/2020/01/logo-ccm-400x100-1.png",
     enterprice: "Chair of Computational Mathematics",
     topics: ["Control Systems", "Signal Processing", "MATLAB"],
-    technology: ["MATLAB", "Python", "Jekyll"],
+    technology: ["MATLAB", "Python", "Jekyll", "Casadi"],
     content:
       "Developing a library for the simulation of solve the optimal control problems. Also, developing a website for the dissemination of the library.",
     date: "2019 - 2021",
   },
   {
     title: "Simulation Developer",
+    url: "https://deustotech.deusto.es/",
     enterprice: "University of Deusto [Mobily Team]",
+    icon: "https://deustotech.deusto.es/wp-content/themes/deustotech/assets/images/deustotech_logo_full.svg",
     topics: ["Indoor Positioning", " GUI", "Signal Processing"],
     technology: ["MATLAB"],
     content:
@@ -47,6 +64,8 @@ const cv = [
   {
     title: "Backend Developer",
     enterprice: "Accenture",
+    url: "https://www.accenture.com/es-es/services/technology-consulting/tecnilogica",
+    icon: "https://www.accenture.com/content/dam/accenture/final/images/icons/symbol/Acc_Logo_Black_Purple_RGB.png",
     topics: ["Database", "Ensurance", "Banking"],
     technology: ["COBOL", "DB2", "RPG"],
     content: "Developing and maintaining the backend of a banking system.",
@@ -54,6 +73,8 @@ const cv = [
   },
   {
     title: "Researcher Fellow",
+    url: "https://www.simuneatomistics.com/",
+    icon: "https://www.simuneatomistics.com/wp-content/uploads/2019/03/SIMUNE_ATOMISTICS-145X75.png",
     enterprice: "SIMUNE Atomistics",
     technology: ["Python", "Bash Script", "SIESTA"],
     topics: ["Physics", "Materials Science", "Computational Chemistry"],
@@ -72,43 +93,70 @@ const cv = [
     </Sectionhead>
 
     {
-      cv.map((item) => (
-        <div class="bg-white shadow-md rounded-lg p-6 mt-12 transition-transform transform hover:scale-105">
-          <div class="flex items-center justify-between mt-2 flex-wrap">
-            <h3 class="text-2xl font-bold text-gray-800">{item.title}</h3>
-            <div class="flex items-center space-x-2">
-              <p class="p-2 text-white bg-green-500 rounded-md border border-green-600">
-                {item.enterprice}
-              </p>
-              <p class="p-2 text-white bg-blue-500 rounded-md border border-blue-600">
-                {item.date}
-              </p>
+      cv.map((item) => {
+        const initialYear = parseInt(item.date.split(" - ")[0]);
+        const finalYear = parseInt(item.date.split(" - ")[1]);
+
+        const yearsofexperience = finalYear
+          ? finalYear - initialYear
+          : new Date().getFullYear() - initialYear;
+        return (
+          <div class="bg-white shadow-md rounded-lg p-6 mt-12 transition-transform transform hover:scale-105">
+            <div class="flex items-center justify-between mt-2 flex-wrap">
+              <div class="font-bold text-gray-800">
+                {/* inline */}
+                <div class="text-2xl text-blue-800 flex items-center">
+                  {item.title}
+                  <div class="text-base text-gray-500 ml-3">({item.date})</div>
+                  <div class="text-base text-gray-500 ml-3">
+                    {yearsofexperience > 1
+                      ? `${yearsofexperience} years`
+                      : `${yearsofexperience} year`}
+                  </div>
+                </div>
+                <div class="text-sm text-gray-500">
+                  <a href={item.url} target="_blank" class="text-blue-500">
+                    {item.enterprice}
+                  </a>
+                </div>
+              </div>
+              {/* logo */}
+              {item.icon && (
+                <a href={item.url} target="_blank">
+                  <img
+                    src={item.icon}
+                    alt={item.enterprice}
+                    class="w-20 mt-2 sm:mt-0 sm:w-24"
+                  />
+                </a>
+              )}
+            </div>
+            <p class="mt-2 text-gray-700">{item.content}</p>
+
+            <div class="mt-4">
+              <h4 class="text-lg font-bold text-blue-800">Technologies</h4>
+              <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-10 gap-1 mt-2">
+                {item.technology.map((tech) => (
+                  <li class="text-white border border-gray-300 rounded-md p-1 bg-red-700 text-sm text-center capitalize">
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="mt-4">
+              <h4 class="text-lg font-bold text-blue-800">Topics</h4>
+              <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-10 gap-1 mt-2">
+                {item.topics.map((topic) => (
+                  // vertical centering
+                  <li class="text-white border border-gray-300 rounded-md p-2 bg-blue-700 text-sm text-center capitalize flex items-center justify-center">
+                    {topic}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-          <p class="mt-2 text-gray-700">{item.content}</p>
-
-          <div class="mt-4">
-            <h4 class="text-lg font-bold text-blue-800">Technologies</h4>
-            <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 mt-2">
-              {item.technology.map((tech) => (
-                <li class="text-gray-600 border border-gray-300 rounded-md p-2 bg-blue-100">
-                  {tech}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div class="mt-4">
-            <h4 class="text-lg font-bold text-blue-800">Topics</h4>
-            <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 mt-2">
-              {item.topics.map((topic) => (
-                <li class="text-gray-600 border border-gray-300 rounded-md p-2 bg-blue-100">
-                  {topic}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))
+        );
+      })
     }
   </Container>
 </Layout>

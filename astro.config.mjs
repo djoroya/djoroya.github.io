@@ -9,7 +9,9 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: "https://djoroya.github.io",
   build : {
-    assets: "assets"
+    assets: "assets",
+    outDir: "docs",
+    output: "docs",
   },
   integrations: [tailwind(), mdx(), sitemap(), icon(), react(), mdx()],
 });

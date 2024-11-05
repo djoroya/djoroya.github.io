@@ -22,7 +22,7 @@ const { title } = Astro.props;
 
 const makeTitle = title
   ? title + " | " + "djoroya"
-  : "Astroship - Starter Template for Astro with Tailwind CSS";
+  : "djoroya";
 ---
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@ const makeTitle = title
     <!-- <link rel="preload" as="image" href={src} alt="Hero" /> -->
     <SEO
       title={makeTitle}
-      description="Astroship is a starter website template for Astro built with TailwindCSS."
+      description=" Personal website of Djoroya, a software engineer and designer."
       canonical={canonicalURL}
       twitter={{
         creator: "@surjithctly",
@@ -65,6 +65,10 @@ const makeTitle = title
       /* https://css-tricks.com/almanac/properties/c/content-visibility/ */
       img {
         content-visibility: auto;
+      }
+      /* background gradient blue gray */
+      body {
+        background: linear-gradient(180deg, #f0f4f8 0%, #d9e2ec 100%);
       }
     </style>
   </body>
